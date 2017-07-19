@@ -8,6 +8,7 @@
 --
 --  The training loop and learning rate schedule
 --
+require 'io'
 
 local optim = require 'optim'
 
@@ -69,7 +70,7 @@ function Trainer:train(epoch, dataloader)
       lossSum = lossSum + loss*batchSize
       N = N + batchSize
 
-      print((' | Epoch: [%d][%d/%d]    Time %.3f  Data %.3f  Err %1.4f  top1 %7.3f  top5 %7.3f'):format(
+      _G.io.write((' | Epoch: [%d][%d/%d]    Time %.3f  Data %.3f  Err %1.4f  top1 %7.3f  top5 %7.3f\r'):format(
          epoch, n, trainSize, timer:time().real, dataTime, loss, top1, top5))
 
       -- check that the storage didn't get changed due to an unfortunate getParameters call
@@ -109,7 +110,7 @@ function Trainer:test(epoch, dataloader)
       top5Sum = top5Sum + top5*batchSize
       N = N + batchSize
 
-      print((' | Test: [%d][%d/%d]    Time %.3f  Data %.3f  top1 %7.3f (%7.3f)  top5 %7.3f (%7.3f)'):format(
+      _G.io.write((' | Test: [%d][%d/%d]    Time %.3f  Data %.3f  top1 %7.3f (%7.3f)  top5 %7.3f (%7.3f)\r'):format(
          epoch, n, size, timer:time().real, dataTime, top1, top1Sum / N, top5, top5Sum / N))
 
       timer:reset()
